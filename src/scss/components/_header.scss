@@ -4,10 +4,26 @@
   border-bottom: 1px solid $gray-line;
   padding: 40px 0;
 
+  @media(max-width:440px) {
+    padding: 25px 0;
+  }
+
+
   .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media(max-width:680px) {
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
+
+  &__cart {
+    @media(max-width:680px) {
+      margin-left: auto;
+    }
   }
 
   &__logo {
