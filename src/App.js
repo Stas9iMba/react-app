@@ -8,22 +8,21 @@ import NotFound from "./pages/NotFound";
 
 import "./scss/app.scss";
 
+export const SearchContext = React.createContext();
+
 function App() {
   const [searchValue, setSearchValue] = React.useState("");
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <Layout searchValue={searchValue} setSearchValue={setSearchValue} />
-        }
-      >
-        <Route index element={<Home searchValue={searchValue} />} />
-        <Route path="cart" element={<Cart />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+    <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </SearchContext.Provider>
   );
 }
 

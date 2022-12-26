@@ -1,9 +1,13 @@
 import React from "react";
 
+import { SearchContext } from "../../App";
+
 import style from "./Search.module.scss";
 import closeSvg from "../../assets/img/removeTextInput.svg";
 
-function Search({ searchValue, setSearchValue }) {
+function Search() {
+  const { searchValue, setSearchValue } = React.useContext(SearchContext);
+
   function onClickSearchClear() {
     setSearchValue("");
   }
