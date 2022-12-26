@@ -8,10 +8,30 @@ import Sort from "../components/Sort";
 function Home() {
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [categoryId, setCategoryIdId] = React.useState(0);
+  const [sortType, setSortType] = React.useState({
+    name: "популярности  (DESC)",
+    sortProperty: "rating",
+  });
+
+  function handleActiveCategory(index) {
+    setCategoryIdId(index);
+  }
+
+  function handleActiveSort(obj) {
+    setSortType(obj);
+  }
 
   React.useEffect(() => {
     try {
-      fetch("https://639c41cc16d1763ab14412f9.mockapi.io/pizzas")
+      setIsLoading(true);
+      const category = categoryId > 0 ? `category=${categoryId}` : "";
+      const sortBy = sortType.sortProperty.replace("-", "");
+      const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
+
+      fetch(
+        `https://639c41cc16d1763ab14412f9.mockapi.io/pizzas?${category}&sortBy=${sortBy}&order=${order}`
+      )
         .then((response) => response.json())
         .then((arr) => {
           setItems(arr);
@@ -21,14 +41,17 @@ function Home() {
       alert("Ошибка при запросе данных! ;(");
       console.error(error);
     }
-  }, []);
+  }, [categoryId, sortType]);
 
   return (
     <div className="content">
       <div className="container">
         <div className="content__top">
-          <Categories />
-          <Sort />
+          <Categories
+            categoryId={categoryId}
+            handleActiveCategory={handleActiveCategory}
+          />
+          <Sort value={sortType} handleActiveSort={handleActiveSort} />
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
