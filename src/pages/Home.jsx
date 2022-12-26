@@ -5,7 +5,7 @@ import PizzaBlock from "../components/PizzaBlock";
 import { Skeleton } from "../components/PizzaBlock/Skeleton";
 import Sort from "../components/Sort";
 
-function Home() {
+function Home({ searchValue }) {
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [categoryId, setCategoryIdId] = React.useState(0);
@@ -28,9 +28,10 @@ function Home() {
       const category = categoryId > 0 ? `category=${categoryId}` : "";
       const sortBy = sortType.sortProperty.replace("-", "");
       const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
+      const search = searchValue ? `&search=${searchValue}` : "";
 
       fetch(
-        `https://639c41cc16d1763ab14412f9.mockapi.io/pizzas?${category}&sortBy=${sortBy}&order=${order}`
+        `https://639c41cc16d1763ab14412f9.mockapi.io/pizzas?${category}&sortBy=${sortBy}&order=${order}${search}`
       )
         .then((response) => response.json())
         .then((arr) => {
@@ -41,7 +42,7 @@ function Home() {
       alert("Ошибка при запросе данных! ;(");
       console.error(error);
     }
-  }, [categoryId, sortType]);
+  }, [categoryId, sortType, searchValue]);
 
   return (
     <div className="content">

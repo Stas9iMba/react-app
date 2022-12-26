@@ -4,11 +4,11 @@ import Header from "../components/Header";
 
 import "../scss/app.scss";
 
-function Layout() {
+function Layout({ searchValue, setSearchValue }) {
   return (
     <div className="wrapper">
       <header>
-        <Header />
+        <Header searchValue={searchValue} setSearchValue={setSearchValue} />
       </header>
       <main className="content">
         <Outlet />
