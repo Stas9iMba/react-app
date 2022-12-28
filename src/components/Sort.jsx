@@ -1,23 +1,29 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-function Sort({ value, handleActiveSort }) {
+import { setSortType } from "../redux/slices/filterSlice";
+
+const sortItems = [
+  { name: "популярности  (DESC)", sortProperty: "rating" },
+  { name: "популярности  (ASC)", sortProperty: "-rating" },
+  { name: "цене (DESC)", sortProperty: "price" },
+  { name: "цене (ASC)", sortProperty: "-price" },
+  { name: "алфавиту (DESC)", sortProperty: "title" },
+  { name: "алфавиту (ASC)", sortProperty: "-title" },
+];
+
+function Sort() {
   const [isOpenSort, setIsOpenSort] = React.useState(false);
 
-  const sortItems = [
-    { name: "популярности  (DESC)", sortProperty: "rating" },
-    { name: "популярности  (ASC)", sortProperty: "-rating" },
-    { name: "цене (DESC)", sortProperty: "price" },
-    { name: "цене (ASC)", sortProperty: "-price" },
-    { name: "алфавиту (DESC)", sortProperty: "title" },
-    { name: "алфавиту (ASC)", sortProperty: "-title" },
-  ];
+  const sort = useSelector((state) => state.filters.sortType);
+  const dispatch = useDispatch();
 
   function handleOpenSort() {
     setIsOpenSort((isOpen) => !isOpen);
   }
 
   function onClickHandleActiveSort(obj) {
-    handleActiveSort(obj);
+    dispatch(setSortType(obj));
     handleOpenSort();
   }
 
@@ -37,7 +43,7 @@ function Sort({ value, handleActiveSort }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={handleOpenSort}>{value.name}</span>
+        <span onClick={handleOpenSort}>{sort.name}</span>
       </div>
       {isOpenSort && (
         <div className="sort__popup">
@@ -46,7 +52,7 @@ function Sort({ value, handleActiveSort }) {
               return (
                 <li
                   className={
-                    value.sortProperty === obj.sortProperty ? "active" : ""
+                    sort.sortProperty === obj.sortProperty ? "active" : ""
                   }
                   onClick={() => onClickHandleActiveSort(obj)}
                   key={index}
