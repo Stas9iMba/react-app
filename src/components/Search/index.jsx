@@ -1,18 +1,32 @@
 import React from "react";
-
+import debounce from "lodash.debounce";
 import { SearchContext } from "../../App";
 
 import style from "./Search.module.scss";
 import closeSvg from "../../assets/img/removeTextInput.svg";
 
 function Search() {
-  const { searchValue, setSearchValue } = React.useContext(SearchContext);
+  const [value, setValue] = React.useState("");
+  const { setSearchValue } = React.useContext(SearchContext);
   const inputRef = React.useRef();
 
   function onClickSearchClear() {
     setSearchValue("");
-    inputRef.current.focus();
+    setValue("");
+    inputRef.current?.focus();
   }
+
+  const updateSearchValue = React.useCallback(
+    debounce((str) => {
+      setSearchValue(str);
+    }, 1000),
+    []
+  );
+
+  const onChangeInput = (event) => {
+    setValue(event.target.value);
+    updateSearchValue(event.target.value);
+  };
 
   return (
     <div className={style.root}>
@@ -21,10 +35,10 @@ function Search() {
         className={style.input}
         type="text"
         placeholder="Поиск пиццы..."
-        value={searchValue}
-        onChange={(event) => setSearchValue(event.target.value)}
+        value={value}
+        onChange={onChangeInput}
       />
-      {searchValue && (
+      {value && (
         <img
           className={style.remove}
           src={closeSvg}
