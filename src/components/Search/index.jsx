@@ -7,14 +7,17 @@ import closeSvg from "../../assets/img/removeTextInput.svg";
 
 function Search() {
   const { searchValue, setSearchValue } = React.useContext(SearchContext);
+  const inputRef = React.useRef();
 
   function onClickSearchClear() {
     setSearchValue("");
+    inputRef.current.focus();
   }
 
   return (
     <div className={style.root}>
       <input
+        ref={inputRef}
         className={style.input}
         type="text"
         placeholder="Поиск пиццы..."
