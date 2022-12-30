@@ -8,20 +8,26 @@ import PizzaBlock from "../components/PizzaBlock";
 import { Skeleton } from "../components/PizzaBlock/Skeleton";
 import Sort from "../components/Sort";
 
-import { setCategoryId, setSortType } from "../redux/slices/filterSlice";
+import {
+  setCategoryId,
+  setSortType,
+  setCurrentPage,
+} from "../redux/slices/filterSlice";
 import { SearchContext } from "../App";
 
 function Home() {
   const { searchValue } = React.useContext(SearchContext);
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [currentPage, setCurrentPage] = React.useState(1);
 
-  const { categoryId, sortType } = useSelector((state) => state.filters);
+  const { categoryId, sortType, currentPage } = useSelector(
+    (state) => state.filters
+  );
+
   const dispatch = useDispatch();
 
   function onChangePages(number) {
-    setCurrentPage(number);
+    dispatch(setCurrentPage(number));
   }
 
   function handleActiveCategory(index) {
